@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Book Discovery & Review Platform
 
-## Getting Started
+Plataforma para descubrir libros y dejar reseñas. Construida con *Next.js*, TypeScript y React, con soporte de reseñas persistentes en localStorage.
 
-First, run the development server:
+---
+
+## 🌐 URL de la aplicación desplegada
+
+books-review-pi.vercel.app
+
+---
+
+## 🚀 Deploy local
+
+Para correr la aplicación localmente:
+
+1. Clonar el repositorio:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/nuria8824/books-review)
+cd books-review
 ```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Instalar dependencias:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Ejecutar en modo desarrollo:
 
-## Learn More
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🧪 Tests Unitarios
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Se utilizan Vitest y React Testing Library.
 
-## Deploy on Vercel
+Para ejecutar los tests:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+npm run test
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+Para ejecutar con reporte de cobertura:
+
+npm run test -- --coverage
+
+📦 Docker
+Construir imagen localmente
+docker build -t book-app:latest .
+
+Ejecutar contenedor
+docker run -p 3000:3000 book-app:latest
+
+
+La aplicación estará disponible en http://localhost:3000.
+
+# GitHub Actions
+## 1. Build en Pull Requests
+
+Archivo: .github/workflows/build.yml
+
+Se ejecuta automáticamente en cada Pull Request a main.
+
+Instala dependencias y realiza el build de Next.js.
+
+Falla el PR si el build falla.
+
+## 2. Tests en Pull Requests
+
+Archivo: .github/workflows/test.yml
+
+Se ejecuta automáticamente en cada Pull Request a main.
+
+Corre todos los tests unitarios con Vitest.
+
+Falla el PR si algún test falla.
+
+## 3. Docker Container
+
+Archivo: .github/workflows/docker.yml
+
+Se ejecuta en cada push a main.
+
+Construye una imagen Docker de la aplicación.
+
+Publica la imagen en GitHub Container Registry (ghcr.io).
+
+Etiqueta la imagen como latest y con el hash del commit.
+
+
+La app correrá en http://localhost:3000.
