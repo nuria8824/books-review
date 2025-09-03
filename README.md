@@ -4,13 +4,13 @@ Plataforma para descubrir libros y dejar reseñas. Construida con *Next.js*, Typ
 
 ---
 
-## 🌐 URL de la aplicación desplegada
+## URL de la aplicación desplegada
 
 books-review-pi.vercel.app
 
 ---
 
-## 🚀 Deploy local
+## Deploy local
 
 Para correr la aplicación localmente:
 
@@ -32,7 +32,7 @@ npm run dev
 
 ---
 
-🧪 Tests Unitarios
+## Tests Unitarios
 
 Se utilizan Vitest y React Testing Library.
 
@@ -45,7 +45,7 @@ Para ejecutar con reporte de cobertura:
 
 npm run test -- --coverage
 
-📦 Docker
+### Docker
 Construir imagen localmente
 docker build -t book-app:latest .
 
@@ -55,8 +55,8 @@ docker run -p 3000:3000 book-app:latest
 
 La aplicación estará disponible en http://localhost:3000.
 
-# GitHub Actions
-## 1. Build en Pull Requests
+## GitHub Actions
+### 1. Build en Pull Requests
 
 Archivo: .github/workflows/build.yml
 
@@ -66,7 +66,7 @@ Instala dependencias y realiza el build de Next.js.
 
 Falla el PR si el build falla.
 
-## 2. Tests en Pull Requests
+### 2. Tests en Pull Requests
 
 Archivo: .github/workflows/test.yml
 
@@ -76,7 +76,7 @@ Corre todos los tests unitarios con Vitest.
 
 Falla el PR si algún test falla.
 
-## 3. Docker Container
+### 3. Docker Container
 
 Archivo: .github/workflows/docker.yml
 
@@ -87,6 +87,5 @@ Construye una imagen Docker de la aplicación.
 Publica la imagen en GitHub Container Registry (ghcr.io).
 
 Etiqueta la imagen como latest y con el hash del commit.
-
 
 La app correrá en http://localhost:3000.
