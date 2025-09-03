@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fffafa; /* Un blanco muy suave */
-  --foreground: #333333; /* Un gris oscuro para el texto */
+  --background: #fffafa;
+  --foreground: #333333;
 
   /* Colores pastel */
   --muted: #f0f4f7;

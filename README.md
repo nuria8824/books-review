@@ -87,5 +87,3 @@ Construye una imagen Docker de la aplicación.
 Publica la imagen en GitHub Container Registry (ghcr.io).
 
 Etiqueta la imagen como latest y con el hash del commit.
-
-La app correrá en http://localhost:3000.
