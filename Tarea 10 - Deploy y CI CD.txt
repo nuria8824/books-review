@@ -1,0 +1,2 @@
+Link repositorio GitHub: https://github.com/nuria8824/books-review
+Link Deploy: books-review-pi.vercel.app
