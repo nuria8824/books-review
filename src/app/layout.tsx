@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Toaster } from "sonner";
 import "./globals.css";
-
+import Navbar from "../components/ui/Navbar";
+import { UserProvider } from "@/context/UserContext";
 
 export const metadata: Metadata = {
   title: "Reseña de Libros",
@@ -11,19 +11,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body>
-        <header className="border-b bg-[#b3cdd1]">
-          <nav className="max-w-5xl mx-auto flex items-center gap-6 p-4">
-            <Link href="/" className="font-semibold">Reseña de Libros</Link>
-          </nav>
-        </header>
-        <main className="max-w-5xl mx-auto p-4">{children}</main>
-        <Toaster position="top-right" />
+        <UserProvider>
+          <header className="w-full">
+            <Navbar />
+          </header>
+          <main className="max-w-5xl mx-auto p-4">{children}</main>
+          <Toaster position="top-right" />
+        </UserProvider>
       </body>
     </html>
   );

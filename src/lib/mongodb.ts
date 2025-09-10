@@ -1,4 +1,3 @@
-// src/lib/mongodb.ts
 import mongoose, { Mongoose } from "mongoose";
 
 const MONGODB_URI: string = process.env.MONGODB_URI || "";
@@ -9,16 +8,13 @@ if (!MONGODB_URI) {
   );
 }
 
-// Extendemos globalThis
 declare global {
-  // eslint-disable-next-line no-var
   var mongoose: {
     conn: Mongoose | null;
     promise: Promise<Mongoose> | null;
   } | undefined;
 }
 
-// 👇 Siempre inicializamos `cached`
 let cached = global.mongoose ?? { conn: null, promise: null };
 global.mongoose = cached;
 
