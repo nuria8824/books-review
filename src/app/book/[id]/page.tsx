@@ -38,7 +38,7 @@ export default async function BookPage({
       {v.description && (
         <article className="prose max-w-none">
           <h2>Descripción</h2>
-          <p dangerouslySetInnerHTML={{ __html: v.description }} />
+          <div dangerouslySetInnerHTML={{ __html: v.description }} />
         </article>
       )}
 

@@ -2,19 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/mongodb";
 import Review from "@/models/review";
+import mongoose from "mongoose";
 
 // Definimos el tipo del payload que esperamos en el token
 interface AuthPayload extends JwtPayload {
   id: string;
 }
 
+export async function GET(req: NextRequest) {
+  await connectToDatabase();
+  const bookId = req.nextUrl.searchParams.get("bookId");
+  const filter = bookId ? { bookId } : {};
+  const reviews = await Review.find(filter)
+    .populate("user", "email name")
+    .sort({ createdAt: -1 });
+  return NextResponse.json({reviews});
+}
+
 export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
 
-    const token = req.headers.get("authorization")?.split(" ")[1];
+    const token = req.cookies.get("br_auth")?.value;
     if (!token) {
-      return NextResponse.json({ error: "Token requerido" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Verificamos y casteamos al tipo correcto
@@ -23,23 +34,18 @@ export async function POST(req: NextRequest) {
       process.env.JWT_SECRET!
     ) as AuthPayload;
 
-    const userId = decoded.id;
-    if (!userId) {
-      return NextResponse.json({ error: "Token inválido" }, { status: 401 });
-    }
-
-    const body = await req.json();
-    const { bookId, content, rating } = body;
-
+    const { bookId, content, rating, bookTitle, bookThumbnail } = await req.json();
     if (!bookId || !content || !rating) {
       return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
     }
 
     const review = await Review.create({
       bookId,
-      content,
-      rating,
-      userId,
+      text: content,
+      stars: rating,
+      user: new mongoose.Types.ObjectId(decoded.id),
+      bookTitle,
+      bookThumbnail,
       createdAt: new Date(),
     });
 

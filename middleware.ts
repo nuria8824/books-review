@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export function middleware(req: NextRequest) {
   const token = req.cookies.get(process.env.COOKIE_NAME || "br_auth")?.value;
 
-  // 🔒 Proteger rutas bajo /account
+  // Proteger rutas bajo /account
   if (req.nextUrl.pathname.startsWith("/account")) {
     if (!token) {
       return NextResponse.redirect(new URL("/login", req.url));
@@ -21,7 +21,7 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-// 🔧 Opcional: definir qué rutas se aplican
+// Opcional: definir qué rutas se aplican
 export const config = {
   matcher: ["/account/:path*"], // protege todo lo que empiece con /account
 };

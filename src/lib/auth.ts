@@ -2,7 +2,6 @@
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { serialize, parse } from "cookie";
-import type { IUser } from "@/models/user";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const COOKIE_NAME = process.env.COOKIE_NAME || "br_auth";
