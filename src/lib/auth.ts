@@ -4,7 +4,7 @@ import { serialize, parse } from "cookie";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const COOKIE_NAME = process.env.COOKIE_NAME || "br_auth";
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 días
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 
 export async function hashPassword(password: string) {
   return argon2.hash(password);
