@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getBook } from "@/lib/googleBooks";
 import ReviewSection from "@/components/ui/ReviewSection";
+import FavoriteButton from "@/components/ui/FavoriteButton";
 
 export default async function BookPage({
   params,
@@ -31,6 +32,11 @@ export default async function BookPage({
             {v.publisher && <span>· {v.publisher}</span>}
             {v.pageCount && <span>· {v.pageCount} págs.</span>}
             {v.categories?.length ? <span>· {v.categories.join(", ")}</span> : null}
+          </div>
+
+          {/* Botón de favoritos */}
+          <div className="mt-4">
+            <FavoriteButton bookId={book.id} />
           </div>
         </div>
       </div>
