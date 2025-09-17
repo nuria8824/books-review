@@ -5,6 +5,7 @@ export interface IUser extends Document {
   passwordHash: string;
   name?: string;
   createdAt: Date;
+  favorites: string[];
 }
 
 const UserSchema = new Schema<IUser>({
@@ -12,6 +13,7 @@ const UserSchema = new Schema<IUser>({
   passwordHash: { type: String, required: true },
   name: { type: String },
   createdAt: { type: Date, default: Date.now },
+  favorites: [{ type: String }],
 });
 
 export const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);

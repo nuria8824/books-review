@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { StarRating } from "@/components/ui/StarRating";
 
@@ -84,18 +85,29 @@ export default function PerfilPage() {
         <span className="text-sm text-gray-600">{avg.toFixed(1)} ({reviews.length} reseñas)</span>
       </div>
 
-      <button
-        onClick={async () => {
-          await fetch("/api/auth/logout", {
-            method: "POST",
-            credentials: "include"
-          });
-          window.location.href = "/";
-        }}
-        className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
-      >
-        Cerrar sesión
-      </button>
+      <div className="flex gap-3 mt-4">
+        {/* Boton de ir a favoritos */}
+        <Link
+          href="/perfil/favorites"
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+        >
+          Favoritos
+        </Link>
+
+        {/* Botón de cerrar sesión */}
+        <button
+          onClick={async () => {
+            await fetch("/api/auth/logout", {
+              method: "POST",
+              credentials: "include"
+            });
+            window.location.href = "/";
+          }}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
+        >
+          Logout
+        </button>
+      </div>
 
       {/* Historial de reseñas */}
       <div className="space-y-3">

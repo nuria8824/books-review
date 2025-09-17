@@ -21,7 +21,8 @@ function getUserFromToken(req: NextRequest): AuthPayload | null {
 }
 
 // EDITAR reseña
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   await connectToDatabase();
   const user = getUserFromToken(req);
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -47,7 +48,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // ELIMINAR reseña
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   await connectToDatabase();
   const user = getUserFromToken(req);
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
