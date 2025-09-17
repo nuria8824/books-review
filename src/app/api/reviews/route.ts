@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/mongodb";
 import Review from "@/models/review";
 import mongoose from "mongoose";
-
-// Definimos el tipo del payload que esperamos en el token
-interface AuthPayload extends JwtPayload {
-  id: string;
-}
+import { requireAuth } from "@/lib/authMiddleware";
 
 export async function GET(req: NextRequest) {
   await connectToDatabase();
@@ -23,16 +18,12 @@ export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
 
-    const token = req.cookies.get("br_auth")?.value;
-    if (!token) {
+    let user;
+    try {
+      user = requireAuth(req);
+    } catch {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    // Verificamos y casteamos al tipo correcto
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    ) as AuthPayload;
 
     const { bookId, content, rating, bookTitle, bookThumbnail } = await req.json();
     if (!bookId || !content || !rating) {
@@ -43,7 +34,7 @@ export async function POST(req: NextRequest) {
       bookId,
       text: content,
       stars: rating,
-      user: new mongoose.Types.ObjectId(decoded.id),
+      user: new mongoose.Types.ObjectId(user.id),
       bookTitle,
       bookThumbnail,
       createdAt: new Date(),

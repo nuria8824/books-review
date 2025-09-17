@@ -2,30 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/mongodb";
 import Review from "@/models/review";
-import mongoose from "mongoose";
+import { requireAuth } from "@/lib/authMiddleware";
 
-interface AuthPayload {
-  id: string;
-  email: string;
-}
+// interface AuthPayload {
+//   id: string;
+//   email: string;
+// }
 
-// Middleware de auth
-function getUserFromToken(req: NextRequest): AuthPayload | null {
-  const token = req.cookies.get(process.env.COOKIE_NAME || "br_auth")?.value;
-  if (!token) return null;
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET!) as AuthPayload;
-  } catch {
-    return null;
-  }
-}
+// // Middleware de auth
+// function getUserFromToken(req: NextRequest): AuthPayload | null {
+//   const token = req.cookies.get(process.env.COOKIE_NAME || "br_auth")?.value;
+//   if (!token) return null;
+//   try {
+//     return jwt.verify(token, process.env.JWT_SECRET!) as AuthPayload;
+//   } catch {
+//     return null;
+//   }
+// }
 
 // EDITAR reseña
 export async function PUT(req: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   await connectToDatabase();
-  const user = getUserFromToken(req);
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  let user;
+  try {
+    user = requireAuth(req);
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const { text, stars } = await req.json();
   if (!text || !stars) {
@@ -51,8 +56,13 @@ export async function PUT(req: NextRequest, props: { params: Promise<{ id: strin
 export async function DELETE(req: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   await connectToDatabase();
-  const user = getUserFromToken(req);
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  let user;
+  try {
+    user = requireAuth(req);
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const review = await Review.findById(params.id);
   if (!review) return NextResponse.json({ error: "Reseña no encontrada" }, { status: 404 });
