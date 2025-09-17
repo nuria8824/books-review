@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 
 interface FavoriteButtonProps {
   bookId: string;
+  userLoggedIn: boolean;
 }
 
-export default function FavoriteButton({ bookId }: FavoriteButtonProps) {
+export default function FavoriteButton({ bookId, userLoggedIn }: FavoriteButtonProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!userLoggedIn) return; // No hacer fetch si no está logueado
+
     const fetchFavorites = async () => {
       try {
         const res = await fetch("/api/users/favorites", { credentials: "include" });
@@ -24,9 +27,10 @@ export default function FavoriteButton({ bookId }: FavoriteButtonProps) {
       }
     };
     fetchFavorites();
-  }, [bookId]);
+  }, [bookId, userLoggedIn]);
 
   const toggleFavorite = async () => {
+    if (!userLoggedIn) return; // No permitir acción si no hay usuario
     setLoading(true);
     try {
       const res = await fetch("/api/users/favorites", {
@@ -44,6 +48,8 @@ export default function FavoriteButton({ bookId }: FavoriteButtonProps) {
       setLoading(false);
     }
   };
+
+  if (!userLoggedIn) return null; // No mostrar botón si no hay usuario
 
   return (
     <button

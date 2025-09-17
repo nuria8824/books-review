@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getBook } from "@/lib/googleBooks";
 import ReviewSection from "@/components/ui/ReviewSection";
 import FavoriteButton from "@/components/ui/FavoriteButton";
+import { getUserFromCookie } from "@/lib/user";
 
 export default async function BookPage({
   params,
@@ -14,6 +15,9 @@ export default async function BookPage({
   const v = book.volumeInfo ?? {};
   const raw = v.imageLinks?.large || v.imageLinks?.medium || v.imageLinks?.thumbnail || v.imageLinks?.smallThumbnail || "";
   const img = raw.replace(/^http:\/\//, "https://");
+  
+  const userData = await getUserFromCookie();
+  const userLoggedIn = !!userData;
 
   return (
     <section className="space-y-6 py-6">
@@ -36,7 +40,7 @@ export default async function BookPage({
 
           {/* Botón de favoritos */}
           <div className="mt-4">
-            <FavoriteButton bookId={book.id} />
+            <FavoriteButton bookId={book.id} userLoggedIn={userLoggedIn} />
           </div>
         </div>
       </div>
