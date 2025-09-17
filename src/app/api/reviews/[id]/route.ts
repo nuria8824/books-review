@@ -1,24 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/mongodb";
 import Review from "@/models/review";
 import { requireAuth } from "@/lib/authMiddleware";
-
-// interface AuthPayload {
-//   id: string;
-//   email: string;
-// }
-
-// // Middleware de auth
-// function getUserFromToken(req: NextRequest): AuthPayload | null {
-//   const token = req.cookies.get(process.env.COOKIE_NAME || "br_auth")?.value;
-//   if (!token) return null;
-//   try {
-//     return jwt.verify(token, process.env.JWT_SECRET!) as AuthPayload;
-//   } catch {
-//     return null;
-//   }
-// }
 
 // EDITAR reseña
 export async function PUT(req: NextRequest, props: { params: Promise<{ id: string }> }) {
